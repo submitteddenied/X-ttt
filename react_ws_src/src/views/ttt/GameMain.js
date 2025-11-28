@@ -7,6 +7,7 @@ import TweenMax from 'gsap'
 import rand_arr_elem from '../../helpers/rand_arr_elem'
 import rand_to_fro from '../../helpers/rand_to_fro'
 import GameBoard from './GameBoard'
+import { game_result } from '../../helpers/tictactoe'
 
 export default class SetName extends Component {
 
@@ -262,23 +263,14 @@ export default class SetName extends Component {
 
 		const { cell_vals } = this.state
 
-		let win = false
-		let set
-		let fin = true
 
 		if (this.props.game_type!='live')
 			this.state.game_stat = 'Play'
 
-
-		for (let i=0; !win && i<this.win_sets.length; i++) {
-			set = this.win_sets[i]
-			if (cell_vals[set[0]] && cell_vals[set[0]]==cell_vals[set[1]] && cell_vals[set[0]]==cell_vals[set[2]])
-				win = true
-		}
-
-
-		for (let i=1; i<=9; i++) 
-			!cell_vals['c'+i] && (fin = false)
+		const result = game_result(this.state.cell_vals)
+		let win = !!result.winner
+		let set = result.set
+		let fin = result.fin
 
 		// win && console.log('win set: ', set)
 
