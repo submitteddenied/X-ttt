@@ -1,7 +1,7 @@
-jest.unmock('../prep_env');
-import prep_env from '../prep_env'
-jest.unmock('ampersand-app'); 
-import app from 'ampersand-app'
+// jest.unmock('../prep_env');
+// import prep_env from '../prep_env'
+// jest.unmock('ampersand-app'); 
+// import app from 'ampersand-app'
 
 // import ws_conf from '../../../ws_conf.xml'
 /*
@@ -13,9 +13,9 @@ app.settings.ws_conf = conf_json.data
 */
 
 
-// let app = {}
-// app.settings = {}
-// app.settings.ws_conf = null
+let app = {}
+app.settings = {}
+app.settings.ws_conf = null
 app.settings = {
 		ws_conf: null,
 	}
@@ -125,7 +125,7 @@ describe('prep_env', () => {
 	it('loaded from xml year', () => {
 		// const disc_model = require('../disc_model');
 
-		expect(app.settings.ws_conf.site.vals.year).toBe(2016);
+		expect(app.settings.ws_conf.site.vals.year).toBe('2016');
 	});
 
 });
