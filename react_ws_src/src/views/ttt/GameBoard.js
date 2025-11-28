@@ -10,23 +10,34 @@ export default class GameBoard extends Component {
 		this.props.cell_click(cell_id)
 	}
 
+	subgame_click(game_id, cells) {
+		this.props.cell_click([game_id].concat(cells))
+	}
+
 	cell(id) {
 		const cell_vals = this.props.cell_vals
-		const icon = {
-			'x': 'fa-times',
-			'o': 'fa-circle-o'
-		}
 		const win_class = this.props.win_cells.indexOf(id) != -1 ? 'win' : ''
-		const icon_size_class = this.props.level && this.props.level > 0 ? 'fa-1x' : 'fa-5x'
+		if(this.props.level == 0) {
+			const icon = {
+				'x': 'fa-times',
+				'o': 'fa-circle-o'
+			}
 
-		return (<div className={'game_cell ' + win_class} data-cell={id} onClick={this.cell_click.bind(this)}>
-			<i className={['fa', icon_size_class, icon[cell_vals[id]]].join(' ')}></i>
-		</div>)
+			return (<div className={'game_cell ' + win_class} data-cell={id} onClick={this.cell_click.bind(this)}>
+				<i className={['fa', icon[cell_vals[id]]].join(' ')}></i>
+			</div>)
+		} else {
+			return <div className={'game_cell ' + win_class}>
+				<div className='inner_wrap'>
+					<GameBoard cell_vals={cell_vals[id] || {}} cell_click={(cells) => {this.subgame_click(id, cells)}} win_cells={[]} level={this.props.level - 1} />
+				</div>
+			</div>
+		}
 	}
 
 	render() {
 		return (
-			<div className='game_board'>
+			<div className={'game_board level-' + this.props.level}>
 				<div className='game_row'>
 					{this.cell('c1')}
 					{this.cell('c2')}
