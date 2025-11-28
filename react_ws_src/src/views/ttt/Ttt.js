@@ -42,6 +42,7 @@ export default class Ttt extends Component {
 													/>}
 					{game_step == 'start_game' && <GameMain 
 														game_type={this.state.game_type}
+														levels={this.state.game_levels}
 														onEndGame={this.gameEnd.bind(this)} 
 													/>}
 
@@ -61,8 +62,10 @@ export default class Ttt extends Component {
 
 //	------------------------	------------------------	------------------------
 
-	saveGameType (t) {
+	saveGameType (t, levels) {
+		console.log(`Starting a game of ${t} with ${levels} levels`)
 		this.state.game_type = t
+		this.state.game_levels = levels
 
 		this.upd_game_step()
 	}

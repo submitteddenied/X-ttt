@@ -16,11 +16,13 @@ export default class SetGameType extends Component {
 
 				<h1>Choose game type</h1>
 
-				<button type='submit' onClick={this.selTypeLive.bind(this)} className='button long'><span>Live against another player <span className='fa fa-caret-right'></span></span></button>
-				
-				&nbsp;&nbsp;&nbsp;&nbsp;
+				<h2>Standard</h2>
+				<button type='submit' data-levels={1} onClick={this.selTypeLive.bind(this)} className='button long'><span>Live against another player <span className='fa fa-caret-right'></span></span></button>
+				<button type='submit' data-levels={1} onClick={this.selTypeComp.bind(this)} className='button long'><span>Against a computer <span className='fa fa-caret-right'></span></span></button>
 
-				<button type='submit' onClick={this.selTypeComp.bind(this)} className='button long'><span>Against a computer <span className='fa fa-caret-right'></span></span></button>
+				<h2>Ultimate</h2>
+				<button type='submit' data-levels={2} onClick={this.selTypeLive.bind(this)} className='button long'><span>Live against another player <span className='fa fa-caret-right'></span></span></button>
+				<button type='submit' data-levels={2} onClick={this.selTypeComp.bind(this)} className='button long'><span>Against a computer <span className='fa fa-caret-right'></span></span></button>
 
 			</div>
 		)
@@ -33,7 +35,8 @@ export default class SetGameType extends Component {
 		// const { onSetType } = this.props
 		// onSetType(name.value.trim())
 
-		this.props.onSetType('live')
+		const levels = parseInt(e.currentTarget.dataset.levels)
+		this.props.onSetType('live', levels)
 	}
 
 //	------------------------	------------------------	------------------------
@@ -43,7 +46,8 @@ export default class SetGameType extends Component {
 		// const { onSetType } = this.props
 		// onSetType(name.value.trim())
 
-		this.props.onSetType('comp')
+		const levels = parseInt(e.currentTarget.dataset.levels)
+		this.props.onSetType('comp', levels)
 	}
 
 }

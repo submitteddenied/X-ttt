@@ -1,6 +1,16 @@
 $border-width: 7px;
 
 section#TTT_game{
+	#SetGameType {
+		h2 {
+			margin-top: 1.5em;
+		}
+
+		button.long {
+			margin-top: 0.5em;
+		}
+	}
+
 	.input_holder{
 		width:50%;
 		//color:#959595;
@@ -105,7 +115,8 @@ section#TTT_game{
 		margin-top:24px;
 
 		&.long {
-			width: 300px;
+			width: 310px;
+			margin-right: 10px;
 		}	
 	}
 

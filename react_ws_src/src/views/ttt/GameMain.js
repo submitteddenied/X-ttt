@@ -123,7 +123,7 @@ export default class SetName extends Component {
 										 cell_click={this.click_cell.bind(this)} 
 										 next_turn_cell={this.state.next_turn_cell}
 										 win_cells={this.state.win_cells} 
-										 level={1} />
+										 level={this.props.levels - 1} />
 				</div>
 
 				<button type='submit' onClick={this.end_game.bind(this)} className='button'><span>End Game <span className='fa fa-caret-right'></span></span></button>

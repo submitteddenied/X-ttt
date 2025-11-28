@@ -7,7 +7,7 @@ export default class GameBoard extends Component {
 
 	cell_click(e) {
 		const cell_id = e.currentTarget.dataset.cell
-		this.props.cell_click(cell_id)
+		this.props.cell_click([cell_id])
 	}
 
 	subgame_click(game_id, cells) {
