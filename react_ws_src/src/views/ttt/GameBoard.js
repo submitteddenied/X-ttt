@@ -16,20 +16,30 @@ export default class GameBoard extends Component {
 
 	cell(id) {
 		const cell_vals = this.props.cell_vals
-		const win_class = this.props.win_cells.indexOf(id) != -1 ? 'win' : ''
+		const cell_classes = ['game_cell']
+		if(this.props.win_cells.indexOf(id) != -1) {
+			cell_classes.push('win')
+		}
 		if(this.props.level == 0) {
 			const icon = {
 				'x': 'fa-times',
 				'o': 'fa-circle-o'
 			}
 
-			return (<div className={'game_cell ' + win_class} data-cell={id} onClick={this.cell_click.bind(this)}>
+			return (<div className={cell_classes.join(' ')} data-cell={id} onClick={this.cell_click.bind(this)}>
 				<i className={['fa', icon[cell_vals[id]]].join(' ')}></i>
 			</div>)
 		} else {
-			return <div className={'game_cell ' + win_class}>
+			if(this.props.next_turn_cell[0] == id) {
+				cell_classes.push('next')
+			}
+			return <div className={cell_classes.join(' ')}>
 				<div className='inner_wrap'>
-					<GameBoard cell_vals={cell_vals[id] || {}} cell_click={(cells) => {this.subgame_click(id, cells)}} win_cells={[]} level={this.props.level - 1} />
+					<GameBoard 
+						cell_vals={cell_vals[id] || {}} 
+						cell_click={(cells) => {this.subgame_click(id, cells)}} 
+						win_cells={[]} 
+						level={this.props.level - 1} />
 				</div>
 			</div>
 		}

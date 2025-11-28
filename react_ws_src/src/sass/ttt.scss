@@ -239,6 +239,9 @@ section#TTT_game{
 					align-items: center;
 					justify-content: center;
 					box-sizing: content-box;
+					&.next {
+						background-color: #0bb;
+					}
 					&.win {
 						background: #f00;
 					}

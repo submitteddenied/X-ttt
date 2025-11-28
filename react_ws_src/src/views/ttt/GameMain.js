@@ -159,7 +159,7 @@ export default class SetName extends Component {
 		this.set_cell_value(cells, 'x')
 
 		if (this.props.game_type != 'live')
-			this.check_turn()
+			this.check_turn(cells)
 		else
 			this.turn_ply_live(cells)
 	}
@@ -233,7 +233,7 @@ export default class SetName extends Component {
 
 		// setTimeout(this.turn_comp.bind(this), rand_to_fro(500, 1000));
 
-		this.check_turn()
+		this.check_turn(cells)
 	}
 
 	//	------------------------	------------------------	------------------------
@@ -251,14 +251,14 @@ export default class SetName extends Component {
 		// })
 
 
-		this.check_turn()
+		this.check_turn(cells)
 	}
 
 	//	------------------------	------------------------	------------------------
 	//	------------------------	------------------------	------------------------
 	//	------------------------	------------------------	------------------------
 
-	check_turn () {
+	check_turn (last_move) {
 
 		const { cell_vals } = this.state
 
@@ -308,6 +308,9 @@ export default class SetName extends Component {
 			this.socket && this.socket.disconnect();
 
 		} else {
+			if(this.props.levels > 1) {
+				this.state.next_turn_cell = [last_move[last_move.length - 1]]
+			}
 			this.props.game_type!='live' && this.state.next_turn_ply && setTimeout(this.turn_comp.bind(this), rand_to_fro(500, 1000));
 
 			this.setState({
