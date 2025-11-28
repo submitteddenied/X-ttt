@@ -6,6 +6,7 @@ import TweenMax from 'gsap'
 
 import rand_arr_elem from '../../helpers/rand_arr_elem'
 import rand_to_fro from '../../helpers/rand_to_fro'
+import GameBoard from './GameBoard'
 
 export default class SetName extends Component {
 
@@ -25,9 +26,9 @@ export default class SetName extends Component {
 			['c3', 'c5', 'c7']
 		]
 
-
 		if (this.props.game_type != 'live')
 			this.state = {
+				win_cells: [],
 				cell_vals: {},
 				next_turn_ply: true,
 				game_play: true,
@@ -37,6 +38,7 @@ export default class SetName extends Component {
 			this.sock_start()
 
 			this.state = {
+				win_cells: [],
 				cell_vals: {},
 				next_turn_ply: true,
 				game_play: false,
@@ -118,27 +120,8 @@ export default class SetName extends Component {
 					<div id="game_stat_msg">{this.state.game_stat}</div>
 					{this.state.game_play && <div id="game_turn_msg">{this.state.next_turn_ply ? 'Your turn' : 'Opponent turn'}</div>}
 				</div>
-
-				<div id="game_board">
-					<table>
-					<tbody>
-						<tr>
-							<td id='game_board-c1' ref='c1' onClick={this.click_cell.bind(this)}> {this.cell_cont('c1')} </td>
-							<td id='game_board-c2' ref='c2' onClick={this.click_cell.bind(this)} className="vbrd"> {this.cell_cont('c2')} </td>
-							<td id='game_board-c3' ref='c3' onClick={this.click_cell.bind(this)}> {this.cell_cont('c3')} </td>
-						</tr>
-						<tr>
-							<td id='game_board-c4' ref='c4' onClick={this.click_cell.bind(this)} className="hbrd"> {this.cell_cont('c4')} </td>
-							<td id='game_board-c5' ref='c5' onClick={this.click_cell.bind(this)} className="vbrd hbrd"> {this.cell_cont('c5')} </td>
-							<td id='game_board-c6' ref='c6' onClick={this.click_cell.bind(this)} className="hbrd"> {this.cell_cont('c6')} </td>
-						</tr>
-						<tr>
-							<td id='game_board-c7' ref='c7' onClick={this.click_cell.bind(this)}> {this.cell_cont('c7')} </td>
-							<td id='game_board-c8' ref='c8' onClick={this.click_cell.bind(this)} className="vbrd"> {this.cell_cont('c8')} </td>
-							<td id='game_board-c9' ref='c9' onClick={this.click_cell.bind(this)}> {this.cell_cont('c9')} </td>
-						</tr>
-					</tbody>
-					</table>
+				<div style={{ width: '400px', height: '400px' }}>
+					<GameBoard cell_vals={this.state.cell_vals} cell_click={this.click_cell.bind(this)} win_cells={this.state.win_cells}/>
 				</div>
 
 				<button type='submit' onClick={this.end_game.bind(this)} className='button'><span>End Game <span className='fa fa-caret-right'></span></span></button>
@@ -150,13 +133,9 @@ export default class SetName extends Component {
 //	------------------------	------------------------	------------------------
 //	------------------------	------------------------	------------------------
 
-	click_cell (e) {
-		// console.log(e.currentTarget.id.substr(11))
-		// console.log(e.currentTarget)
-
+	click_cell (cell_id) {
 		if (!this.state.next_turn_ply || !this.state.game_play) return
 
-		const cell_id = e.currentTarget.id.substr(11)
 		if (this.state.cell_vals[cell_id]) return
 
 		if (this.props.game_type != 'live')
@@ -174,7 +153,7 @@ export default class SetName extends Component {
 
 		cell_vals[cell_id] = 'x'
 
-		TweenMax.from(this.refs[cell_id], 0.7, {opacity: 0, scaleX:0, scaleY:0, ease: Power4.easeOut})
+		// TweenMax.from(this.refs[cell_id], 0.7, {opacity: 0, scaleX:0, scaleY:0, ease: Power4.easeOut})
 
 
 		// this.setState({
@@ -204,7 +183,7 @@ export default class SetName extends Component {
 		const c = rand_arr_elem(empty_cells_arr)
 		cell_vals[c] = 'o'
 
-		TweenMax.from(this.refs[c], 0.7, {opacity: 0, scaleX:0, scaleY:0, ease: Power4.easeOut})
+		// TweenMax.from(this.refs[c], 0.7, {opacity: 0, scaleX:0, scaleY:0, ease: Power4.easeOut})
 
 
 		// this.setState({
@@ -227,7 +206,7 @@ export default class SetName extends Component {
 
 		cell_vals[cell_id] = 'x'
 
-		TweenMax.from(this.refs[cell_id], 0.7, {opacity: 0, scaleX:0, scaleY:0, ease: Power4.easeOut})
+		// TweenMax.from(this.refs[cell_id], 0.7, {opacity: 0, scaleX:0, scaleY:0, ease: Power4.easeOut})
 
 		this.socket.emit('ply_turn', { cell_id: cell_id });
 
@@ -254,7 +233,7 @@ export default class SetName extends Component {
 		const c = data.cell_id
 		cell_vals[c] = 'o'
 
-		TweenMax.from(this.refs[c], 0.7, {opacity: 0, scaleX:0, scaleY:0, ease: Power4.easeOut})
+		// TweenMax.from(this.refs[c], 0.7, {opacity: 0, scaleX:0, scaleY:0, ease: Power4.easeOut})
 
 
 		// this.setState({
@@ -296,17 +275,17 @@ export default class SetName extends Component {
 		// win && console.log('win set: ', set)
 
 		if (win) {
-		
-			this.refs[set[0]].classList.add('win')
-			this.refs[set[1]].classList.add('win')
-			this.refs[set[2]].classList.add('win')
+			// this.refs[set[0]].classList.add('win')
+			// this.refs[set[1]].classList.add('win')
+			// this.refs[set[2]].classList.add('win')
 
-			TweenMax.killAll(true)
-			TweenMax.from('td.win', 1, {opacity: 0, ease: Linear.easeIn})
+			// TweenMax.killAll(true)
+			// TweenMax.from('td.win', 1, {opacity: 0, ease: Linear.easeIn})
 
 			this.setState({
 				game_stat: (cell_vals[set[0]]=='x'?'You':'Opponent')+' win',
-				game_play: false
+				game_play: false,
+				win_cells: set
 			})
 
 			this.socket && this.socket.disconnect();
@@ -337,7 +316,4 @@ export default class SetName extends Component {
 
 		this.props.onEndGame()
 	}
-
-
-
 }
