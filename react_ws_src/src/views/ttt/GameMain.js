@@ -7,7 +7,7 @@ import TweenMax from 'gsap'
 import rand_arr_elem from '../../helpers/rand_arr_elem'
 import rand_to_fro from '../../helpers/rand_to_fro'
 import GameBoard from './GameBoard'
-import { game_result } from '../../helpers/tictactoe'
+import { game_result, possible_moves } from '../../helpers/tictactoe'
 
 export default class SetName extends Component {
 
@@ -194,16 +194,11 @@ export default class SetName extends Component {
 	}
 
 	turn_comp() {
-		let { cell_vals } = this.state
-		let empty_cells_arr = []
+		const available_moves = possible_moves(this.state.cell_vals, this.props.levels, this.state.next_turn_cell)
 
+		const c = rand_arr_elem(available_moves)
 
-		for (let i=1; i<=9; i++) 
-			!cell_vals['c'+i] && empty_cells_arr.push('c'+i)
-		// console.log(cell_vals, empty_cells_arr, rand_arr_elem(empty_cells_arr))
-
-		const c = rand_arr_elem(empty_cells_arr)
-		cell_vals[c] = 'o'
+		this.set_cell_value(c, 'o')
 
 		// TweenMax.from(this.refs[c], 0.7, {opacity: 0, scaleX:0, scaleY:0, ease: Power4.easeOut})
 
@@ -213,9 +208,7 @@ export default class SetName extends Component {
 		// 	next_turn_ply: true
 		// })
 
-		this.state.cell_vals = cell_vals
-
-		this.check_turn()
+		this.check_turn(c)
 	}
 
 
@@ -282,6 +275,7 @@ export default class SetName extends Component {
 			// TweenMax.killAll(true)
 			// TweenMax.from('td.win', 1, {opacity: 0, ease: Linear.easeIn})
 
+			console.log(result)
 			this.setState({
 				game_stat: (result.winner == 'x' ? 'You' : 'Opponent') + ' win',
 				game_play: false,
@@ -291,7 +285,7 @@ export default class SetName extends Component {
 			this.socket && this.socket.disconnect();
 
 		} else if (fin) {
-
+			console.log(result)
 			this.setState({
 				game_stat: 'Draw',
 				game_play: false
