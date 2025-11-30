@@ -12,6 +12,7 @@ const win_sets = [
 ]
 
 export function game_result(game) {
+	game = game || {}
 	const resolved_game = Object.keys(game).reduce((memo, cell) => {
 		if(typeof game[cell] == 'string') {
 			memo[cell] = game[cell]

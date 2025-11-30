@@ -76,5 +76,17 @@ describe('game_result', () => {
       expect(result.fin).toBe(true)
       expect(result.set).toEqual(['c1', 'c2', 'c3'])
     })
+
+    it('returns unfinished when outer game is not finished', () => {
+      const g1 = {c1: 'x', c2: 'x', c3: 'x'}
+      const g2 = {c1: 'x', c2: 'o'}
+      const g3 = {c1: 'o', c2: 'o', c3: 'o'}
+      const outer_game = {c1: g1, c2: g2, c3: g3}
+
+      const result = game_result(outer_game)
+      expect(result.winner).toBeUndefined()
+      expect(result.fin).toBe(false)
+      expect(result.set).toEqual([])
+    })
   })
 })

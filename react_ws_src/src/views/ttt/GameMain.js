@@ -267,7 +267,7 @@ export default class SetName extends Component {
 		if (this.props.game_type!='live')
 			this.state.game_stat = 'Play'
 
-		const result = game_result(this.state.cell_vals)
+		const result = game_result(cell_vals)
 		let win = !!result.winner
 		let set = result.set
 		let fin = result.fin
@@ -283,7 +283,7 @@ export default class SetName extends Component {
 			// TweenMax.from('td.win', 1, {opacity: 0, ease: Linear.easeIn})
 
 			this.setState({
-				game_stat: (cell_vals[set[0]]=='x'?'You':'Opponent')+' win',
+				game_stat: (result.winner == 'x' ? 'You' : 'Opponent') + ' win',
 				game_play: false,
 				win_cells: set
 			})
@@ -301,7 +301,15 @@ export default class SetName extends Component {
 
 		} else {
 			if(this.props.levels > 1) {
-				this.state.next_turn_cell = [last_move[last_move.length - 1]]
+				//force the next turn to be in the given cell if that game can be played in
+				const last_cell = last_move[last_move.length - 1]
+				const subgame = cell_vals[last_cell]
+				const subgame_result = game_result(subgame)
+				if(!subgame_result.fin) {
+					this.state.next_turn_cell = [last_cell]
+				} else {
+					this.state.next_turn_cell = undefined
+				}
 			}
 			this.props.game_type!='live' && this.state.next_turn_ply && setTimeout(this.turn_comp.bind(this), rand_to_fro(500, 1000));
 
