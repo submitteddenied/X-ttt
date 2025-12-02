@@ -138,8 +138,10 @@ export default class SetName extends Component {
 
 	click_cell (cells) {
 		console.log(JSON.stringify(cells))
+		// prevent play out of turn
 		if (!this.state.next_turn_ply || !this.state.game_play) return
 
+		// prevent play in already played cells
 		const cell_val = cells.reduce((games, cell_id) => {
 			if (games && games[cell_id]) {
 				return games[cell_id]
@@ -149,6 +151,7 @@ export default class SetName extends Component {
 
 		if (cell_val) return
 
+		// prevent play outside the next turn cell, if set
 		if (this.state.next_turn_cell) {
 			for(let i = 0; i < this.state.next_turn_cell.length; i++) {
 				if(this.state.next_turn_cell[i] != cells[i]) {
@@ -156,6 +159,18 @@ export default class SetName extends Component {
 				}
 			}
 		}
+
+		// prevent play in already completed subgames
+		if(this.props.levels > 1) {
+			let played_game = this.state.cell_vals
+			for(let level = 0; level < this.props.levels; level++) {
+				played_game = played_game[cells[level]] || {}
+				if(game_result(played_game).fin) {
+					return
+				}
+			}
+		}
+
 
 		this.set_cell_value(cells, 'x')
 
@@ -275,7 +290,6 @@ export default class SetName extends Component {
 			// TweenMax.killAll(true)
 			// TweenMax.from('td.win', 1, {opacity: 0, ease: Linear.easeIn})
 
-			console.log(result)
 			this.setState({
 				game_stat: (result.winner == 'x' ? 'You' : 'Opponent') + ' win',
 				game_play: false,
@@ -285,7 +299,6 @@ export default class SetName extends Component {
 			this.socket && this.socket.disconnect();
 
 		} else if (fin) {
-			console.log(result)
 			this.setState({
 				game_stat: 'Draw',
 				game_play: false
