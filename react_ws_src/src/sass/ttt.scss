@@ -140,9 +140,12 @@ section#TTT_game{
 		}
 	}
 
-	#game_board {
-			// padding: 10px;
+	.board_wrapper {
+		width: 400px;
+		height: 400px;
+	}
 
+	#game_board {
 		table {
 			background: #fff;
 			margin: 10px;

@@ -119,7 +119,7 @@ export default class SetName extends Component {
 					<div id="game_stat_msg">{this.state.game_stat}</div>
 					{this.state.game_play && <div id="game_turn_msg">{this.state.next_turn_ply ? 'Your turn' : 'Opponent turn'}</div>}
 				</div>
-				<div style={{ width: '400px', height: '400px' }}>
+				<div className="board_wrapper">
 					<GameBoard cell_vals={this.state.cell_vals} 
 										 cell_click={this.click_cell.bind(this)} 
 										 next_turn_cell={this.state.next_turn_cell}
